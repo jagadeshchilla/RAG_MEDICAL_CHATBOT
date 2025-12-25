@@ -3,8 +3,8 @@
 ## Clone the Project
 
 ```bash
-git clone https://github.com/data-guru0/LLMOPS-2-TESTING-MEDICAL.git
-cd LLMOPS-2-TESTING-MEDICAL
+git clone https://github.com/jagadeshchilla/RAG_MEDICAL_CHATBOT.git
+cd RAG_MEDICAL_CHATBOT
 ```
 
 ## Create a Virtual Environment (Windows)
@@ -20,14 +20,14 @@ venv\Scripts\activate
 pip install -e .
 ```
 
-## ✅ Prerequisites Checklist (Complete These Before Moving Forward)
+## Prerequisites Checklist (Complete These Before Moving Forward)
 
 - [ ] **Docker Desktop** is installed and running in the background
 - [ ] **Code versioning** is properly set up using GitHub (repository pushed and updated)
 - [ ] **Dockerfile** is created and configured for the project
 - [ ] **Dockerfile** is also created and configured for **Jenkins**
 
-## ==> 1. 🚀 Jenkins Setup for Deployment
+## ==> 1. Jenkins Setup for Deployment
 
 ### 1. Create Jenkins Setup Directory and Dockerfile
 
@@ -48,7 +48,7 @@ Make sure **Docker Desktop is running in the background**, then build the image:
 docker build -t custom-jenkins .
 ```
 
-> ℹ️ **Note**: The Dockerfile has been updated with modern Docker installation methods:
+> **Note**: The Dockerfile has been updated with modern Docker installation methods:
 > - Uses dynamic Debian version detection (works with any Debian version including "trixie")
 > - Modern GPG key handling using `/etc/apt/keyrings/` instead of deprecated `apt-key`
 > - Removed `software-properties-common` (not available in newer Debian versions)
@@ -82,12 +82,12 @@ docker run -d \
   custom-jenkins
 ```
 
-> ⚠️ **Important**: 
+> **Important**: 
 > - Use backticks (`` ` ``) for line continuation in **PowerShell**
 > - Use backslashes (`\`) for line continuation in **Bash**
 > - The image name is `custom-jenkins` (matching the build command)
 
-> ✅ If successful, you’ll get a long alphanumeric container ID
+> If successful, you'll get a long alphanumeric container ID
 
 ### 4. Check Jenkins Logs and Get Initial Password
 
@@ -129,7 +129,7 @@ docker restart jenkins-dind
 
 ### 8. Go to Jenkins Dashboard and Sign In Again
 
-## ==> 2. 🔗 Jenkins Integration with GitHub
+## ==> 2. Jenkins Integration with GitHub
 
 ### 1. Generate a GitHub Personal Access Token
 
@@ -143,7 +143,7 @@ docker restart jenkins-dind
 
 - Generate the token and **save it securely** (you won’t see it again!).
 
-> ℹ️ **What is this token?**
+> **What is this token?**
 > A GitHub token is a secure way to authenticate Jenkins (or any CI/CD tool) to access your GitHub repositories without needing your GitHub password. It's safer and recommended over using plain credentials.
 
 ---
@@ -168,7 +168,7 @@ Click **Save**.
 - Enter a name (e.g., `medical-rag-pipeline`)
 - Click **OK** → Scroll down, configure minimal settings → Click **Save**
 
-> ⚠️ You will have to configure pipeline details **again** in the next step
+> **Warning**: You will have to configure pipeline details **again** in the next step
 
 ---
 
@@ -205,15 +205,15 @@ git push origin main
 
 - Go to **Jenkins Dashboard** → Select your pipeline → Click **Build Now**
 
-🎉 **You’ll see a SUCCESS message if everything works!**
+**You'll see a SUCCESS message if everything works!**
 
-✅ **Your GitHub repository has been cloned inside Jenkins’ workspace!**
+**Your GitHub repository has been cloned inside Jenkins' workspace!**
 
 ---
 
-> 🔁 If you already cloned the repo with a `Jenkinsfile` in it, you can skip creating a new one manually.
+> If you already cloned the repo with a `Jenkinsfile` in it, you can skip creating a new one manually.
 
-## ==> 3. 🐳 Build Docker Image, Scan with Trivy, and Push to AWS ECR
+## ==> 3. Build Docker Image, Scan with Trivy, and Push to AWS ECR
 
 ### 1. Install Trivy in Jenkins Container
 
@@ -295,7 +295,7 @@ exit
 
 
 
-> 🔐 **Tip**: Change `--exit-code 0` to `--exit-code 1` in Trivy to make the pipeline fail on vulnerabilities.
+> **Tip**: Change `--exit-code 0` to `--exit-code 1` in Trivy to make the pipeline fail on vulnerabilities.
 
 ---
 
@@ -317,20 +317,20 @@ docker restart jenkins-dind
 
 Then open **Jenkins Dashboard** again to continue.
 
-## ==> 4. 🚀 Deployment to AWS App Runner
+## ==> 4. Deployment to AWS App Runner
 
-### ✅ Prerequisites
+### Prerequisites
 
 1. **Jenkinsfile Deployment Stage** ( Already done if cloned )
 
-### 🔐 IAM User Permissions
+### IAM User Permissions
 
 - Go to **AWS Console** → **IAM** → Select your Jenkins user
 - Attach the policy: `AWSAppRunnerFullAccess`
 
 ---
 
-### 🌐 Setup AWS App Runner (Manual Step)
+### Setup AWS App Runner (Manual Step)
 
 1. Go to **AWS Console** → **App Runner**
 2. Click **Create service**
@@ -341,17 +341,17 @@ Then open **Jenkins Dashboard** again to continue.
 5. Set auto-deploy from ECR if desired
 6. Deploy the service
 
-📺 Follow the tutorial video instructions for correct setup
+Follow the tutorial video instructions for correct setup
 
 ---
 
-### 🧪 Run Jenkins Pipeline
+### Run Jenkins Pipeline
 
 - Go to **Jenkins Dashboard** → Select your pipeline job
 - Click **Build Now**
 
 If all stages succeed (Checkout → Build → Trivy Scan → Push to ECR → Deploy to App Runner):
 
-🎉 **CI/CD Deployment to AWS App Runner is complete!**
+**CI/CD Deployment to AWS App Runner is complete!**
 
-✅ Your app is now live and running on AWS 🚀
+Your app is now live and running on AWS
