@@ -45,21 +45,47 @@ cd custom_jenkins
 Make sure **Docker Desktop is running in the background**, then build the image:
 
 ```bash
-docker build -t jenkins-dind .
+docker build -t custom-jenkins .
 ```
+
+> ℹ️ **Note**: The Dockerfile has been updated with modern Docker installation methods:
+> - Uses dynamic Debian version detection (works with any Debian version including "trixie")
+> - Modern GPG key handling using `/etc/apt/keyrings/` instead of deprecated `apt-key`
+> - Removed `software-properties-common` (not available in newer Debian versions)
+> - Includes Docker Buildx and Docker Compose plugins
 
 ### 3. Run Jenkins Container
 
-```bash
-docker run -d ^
-  --name jenkins-dind ^
-  --privileged ^
-  -p 8080:8080 ^
-  -p 50000:50000 ^
-  -v /var/run/docker.sock:/var/run/docker.sock ^
-  -v jenkins_home:/var/jenkins_home ^
-  jenkins-dind
+**For PowerShell (Windows):**
+
+```powershell
+docker run -d `
+  --name jenkins-dind `
+  --privileged `
+  -p 8080:8080 `
+  -p 50000:50000 `
+  -v jenkins_home:/var/jenkins_home `
+  -v /var/run/docker.sock:/var/run/docker.sock `
+  custom-jenkins
 ```
+
+**For Bash/Linux/Mac:**
+
+```bash
+docker run -d \
+  --name jenkins-dind \
+  --privileged \
+  -p 8080:8080 \
+  -p 50000:50000 \
+  -v jenkins_home:/var/jenkins_home \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  custom-jenkins
+```
+
+> ⚠️ **Important**: 
+> - Use backticks (`` ` ``) for line continuation in **PowerShell**
+> - Use backslashes (`\`) for line continuation in **Bash**
+> - The image name is `custom-jenkins` (matching the build command)
 
 > ✅ If successful, you’ll get a long alphanumeric container ID
 
